@@ -8,8 +8,8 @@ var values = File.ReadAllLines("input.txt").Select(t => t
    .Select(x => x.Trim().Replace("bags", "bag")).ToList())
       .ToDictionary(
          k => k[0],
-         v => v[1].Trim() != "no other bag" ? 
-            v.Skip(1).ToDictionary(v => v.Substring(2), v => Int32.Parse(v.Substring(0, 1))) : 
+         v => v[1].Trim() != "no other bag" ?
+            v.Skip(1).ToDictionary(v => v[2..], v => int.Parse(v.Substring(0, 1))) :
             new Dictionary<string, int>());
 
 bool Contains(string bag) => values[bag].ContainsKey("shiny gold bag") || values[bag].Keys.Any(Contains);
