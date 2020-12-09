@@ -17,7 +17,8 @@ Console.WriteLine(FlipInstructions(instructions));
    {
        "acc" => (reg.accumulator + i.value, reg.pointer + 1),
        "jmp" => (reg.accumulator, reg.pointer + i.value),
-       "nop" => (reg.accumulator, reg.pointer + 1)
+       "nop" => (reg.accumulator, reg.pointer + 1),
+       _ => reg
    }; 
 
    while (reg.pointer < instructions.Count && !instructionsExecuted.Contains(reg.pointer))
@@ -34,8 +35,8 @@ int FlipInstructions(List<(string inst, int value)> instructions)
    for (int i = 0; i < instructions.Count; i++)
    {
       instructions[i] = (flip(instructions[i].inst), instructions[i].value);
-      var comp = ProcessInstructions(instructions);
-      if (comp.pointer == instructions.Count) return comp.accumulator;
+      var (accumulator, pointer) = ProcessInstructions(instructions);
+      if (pointer == instructions.Count) return accumulator;
       instructions[i] = (flip(instructions[i].inst), instructions[i].value);
    }
    return 0;
