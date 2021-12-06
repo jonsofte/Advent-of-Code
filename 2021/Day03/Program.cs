@@ -1,4 +1,6 @@
-﻿using System;
+﻿// https://adventofcode.com/2021/day/3
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
