@@ -7,10 +7,10 @@ using System.Linq;
 
 var input = File.ReadAllText("input.txt").Split(',').Select(x => int.Parse(x)).ToList();
 
-Console.WriteLine(GetNunberOfFishByDay(input, 80));
-Console.WriteLine(GetNunberOfFishByDay(input, 256));
+Console.WriteLine(GetNumberOfFishByDay(input, 80));
+Console.WriteLine(GetNumberOfFishByDay(input, 256));
 
-static long GetNunberOfFishByDay(List<int> input, int numberOfDays)
+static long GetNumberOfFishByDay(List<int> input, int numberOfDays)
 {
     var fishPerDay = input.GroupBy(x => x).ToDictionary(g => g.Key, g => (long)g.Count());
     Enumerable.Range(0, numberOfDays).ToList().ForEach(x => fishPerDay = NextDay(fishPerDay));
