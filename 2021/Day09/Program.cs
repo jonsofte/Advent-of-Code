@@ -45,13 +45,13 @@ static int GetBasinSize((int r, int c) point, int[][] depthMap, HashSet<(int, in
     visitedPoints.Add(point);
     int sum = 0;
 
-    foreach ((int dr, int c) in new [] { (-1, 0), (1, 0), (0, -1), (0, 1) })
+    foreach ((int dr, int dc) in new [] { (-1, 0), (1, 0), (0, -1), (0, 1) })
     {
-        if (ValidPosition(point.r + dr, point.c + c, depthMap) &&
-            !visitedPoints.Contains((point.r + dr, point.c + c)) &&
-            depthMap[point.r + dr][point.c + c] < 9)
+        if (ValidPosition(point.r + dr, point.c + dc, depthMap) &&
+            !visitedPoints.Contains((point.r + dr, point.c + dc)) &&
+            depthMap[point.r + dr][point.c + dc] < 9)
         {
-            sum += GetBasinSize((point.r + dr, point.c + c), depthMap, visitedPoints);
+            sum += GetBasinSize((point.r + dr, point.c + dc), depthMap, visitedPoints);
         }
     }
     return 1 + sum;
