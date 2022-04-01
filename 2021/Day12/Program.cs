@@ -40,12 +40,12 @@ int MoveToCave(string currentCave, HashSet<string> visitedCaves, bool smallCaveI
 static Dictionary<string, List<string>> CreateGraphFromEdges(IEnumerable<(string from, string to)> input)
 {
     var graph = new Dictionary<string, List<string>>();
-    foreach (var edge in input)
+    foreach (var (from, to) in input)
     {
-        if (!graph.ContainsKey(edge.from)) graph.Add(edge.from, new List<string>());
-        if (!graph.ContainsKey(edge.to)) graph.Add(edge.to, new List<string>());
-        graph[edge.from].Add(edge.to);
-        graph[edge.to].Add(edge.from);
+        if (!graph.ContainsKey(from)) graph.Add(from, new List<string>());
+        if (!graph.ContainsKey(to)) graph.Add(to, new List<string>());
+        graph[from].Add(to);
+        graph[to].Add(from);
     }
     return graph;
 }
