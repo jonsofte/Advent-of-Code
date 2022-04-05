@@ -1,10 +1,10 @@
-﻿using System;
+﻿// https://adventofcode.com/2021/day/16
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-var binaryInput = new Queue<char>(HexToBinary(File.ReadAllText("input.txt").Trim()).ToCharArray());
-var package = ParsePackage(binaryInput);
+var package = ParsePackage(new Queue<char>(HexToBinary(File.ReadAllText("input.txt").Trim()).ToCharArray()));
 
 Console.WriteLine(GetSumOfVersions(package));
 Console.WriteLine(CalculateValue(package));
@@ -16,13 +16,11 @@ static Package ParsePackage(Queue<char> q)
     long value = 0;
     var packages = new List<Package>();
 
-    if (type == 4) value = ParseLiteralValue(q);
+    if (type == 4) value = BinaryToDecimal(string.Concat(ParseLiteralData(q)));
     else packages.AddRange((BinaryToDecimal(DequeueSelection(q, 1)) == 0) ? ParseTotalLength(q) : ParseNumberOfPackages(q));
-
+    
     return new Package(version, type, packages, value);
 }
-
-static long ParseLiteralValue(Queue<char> q) => BinaryToDecimal(string.Concat(ParseLiteralData(q)));
 
 static IEnumerable<string> ParseLiteralData(Queue<char> q)
 {
@@ -40,8 +38,6 @@ static IEnumerable<Package> ParseTotalLength(Queue<char> q)
 static IEnumerable<Package> ParseNumberOfPackages(Queue<char> q) =>
     Enumerable.Range(0, (int)BinaryToDecimal(DequeueSelection(q, 11))).Select(p => ParsePackage(q));
 
-static int GetSumOfVersions(Package p) => p.SubPackages.Sum(x => GetSumOfVersions(x)) + p.Version;
-
 static long CalculateValue(Package p) => p.Type switch
 {
     4 => p.Value,
@@ -55,9 +51,9 @@ static long CalculateValue(Package p) => p.Type switch
     _ => 0,
 };
 
+static int GetSumOfVersions(Package p) => p.SubPackages.Sum(x => GetSumOfVersions(x)) + p.Version;
 static string HexToBinary(string input) => string.Concat(input.ToCharArray().Select(c => HexCharToNibble(c)));
 static string HexCharToNibble(char c) => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0');
 static long BinaryToDecimal(string input) => Convert.ToInt64(input, 2);
 static string DequeueSelection(Queue<char> q, int length) => String.Concat(Enumerable.Range(0, length).Select(i => q!.Dequeue()));
-
 record Package(int Version, long Type, List<Package> SubPackages, long Value);
