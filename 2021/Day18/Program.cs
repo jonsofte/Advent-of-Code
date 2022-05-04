@@ -94,6 +94,6 @@ static Element ParseTree(string input)
     return elements.Pop();
 }
 
-public abstract record Element;
-public record RegularNumber(int Value) : Element;
-public record Pair(Element Left, Element Right) : Element;
+abstract record Element;
+record RegularNumber(int Value) : Element;
+record Pair(Element Left, Element Right) : Element;
