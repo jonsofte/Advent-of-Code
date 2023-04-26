@@ -2,13 +2,14 @@
 
 var map = File.ReadAllText("input.txt").Split("\r\n")
     .SelectMany((l, r) => l.ToCharArray()
-        .Select((height, c) => (pos: new Position(r, c), height)));
+    .Select((height, c) => (pos: new Position(r, c), height))).ToDictionary( k => k.pos, v => v.height);
 
-Console.WriteLine(GetDistance(map, queue: new(new[] { (map.Single(x => x.height == 'S').pos, 'a') })));
-Console.WriteLine(GetDistance(map, queue: new(map.Where(x => x.height == 'a'))));
+Console.WriteLine(GetDistance(map, queue: new(new[] { (map.Single(x => x.Value == 'S').Key, 'a') })));
+Console.WriteLine(GetDistance(map, queue: new(map.Where(x => x.Value == 'a').Select(x => (x.Key, x.Value)))));
 
-static int GetDistance(IEnumerable<(Position pos, char height)> map, Queue<(Position pos, char height)> queue)
+static int GetDistance(IDictionary<Position, char> map, Queue<(Position pos, char height)> queue)
 {
+    (int maxR, int maxC) = (map.Select(x => x.Key.Row).Max(), map.Select(x => x.Key.Column).Max());
     var visited = new Dictionary<Position, int>();
     queue.ToList().ForEach(x => visited[x.pos] = 0);
 
@@ -16,10 +17,12 @@ static int GetDistance(IEnumerable<(Position pos, char height)> map, Queue<(Posi
     {
         var current = queue.Dequeue();
         var neighbours = GetNeighbourPos()
-            .Select(x => new Position(current.pos.Row + x.r, current.pos.Column + x.c));
+            .Select(x => new Position(current.pos.Row + x.r, current.pos.Column + x.c))
+            .Where( p => p.Row >= 0 && p.Row <= maxR && p.Column >= 0 && p.Column <= maxC);
 
-        foreach (var neighbour in map.Where(x => neighbours.Contains(x.pos)))
+        foreach (var pos in neighbours)
         {
+            var neighbour = (pos, height: map[pos]);
             if ((neighbour.height == 'E' ? 'z' : neighbour.height) - current.height < 2 &&
                 visited.GetValueOrDefault(neighbour.pos, int.MaxValue) > visited[current.pos] + 1)
             {
