@@ -33,10 +33,10 @@ static (int SumOfValidNumbers, int SumOfGears) Calculate(string[] input)
 }
 
 static List<Symbol> GetAdjacentSymbols(string[] input, int line, int position) => NeighbourDelta()
-        .Select(x => (l: line + x.l, p: position + x.p))
-        .Where(p => p.l >= 0 && p.l < input.Length && p.p >= 0 && p.p < input[0].Length)
-        .Where(x => input[x.l][x.p] != '.' && !char.IsDigit(input[x.l][x.p]))
-        .Select(x => new Symbol(input[x.l][x.p], x.l, x.p)).ToList();
+    .Select(x => (l: line + x.l, p: position + x.p))
+    .Where(p => p.l >= 0 && p.l < input.Length && p.p >= 0 && p.p < input[0].Length)
+    .Where(x => input[x.l][x.p] != '.' && !char.IsDigit(input[x.l][x.p]))
+    .Select(x => new Symbol(input[x.l][x.p], x.l, x.p)).ToList();
 
 static IEnumerable<(int l, int p)> NeighbourDelta() =>
     new[] { (-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1) };
