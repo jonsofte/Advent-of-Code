@@ -1,4 +1,6 @@
-﻿open System.IO
+﻿// https://adventofcode.com/2024/day/4
+
+open System.IO
 
 type Position = {l: int; r: int}
 
