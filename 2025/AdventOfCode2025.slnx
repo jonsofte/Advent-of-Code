@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Day01-fsharp/Day01-fsharp.fsproj" />
+  <Project Path="Day02-fsharp/Day02-fsharp.fsproj" Id="22257793-083d-4246-b6af-756712631b96" />
 </Solution>
