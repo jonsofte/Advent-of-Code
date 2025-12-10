@@ -30,13 +30,13 @@ let part1 =
     |> Seq.collect (getInvalidValues (isInvalid 2))
     |> Seq.sum 
 
-let isValidAllLengths value = 
+let isInvalidAllSplits value = 
     [2..(string value).Length] 
     |> Seq.exists (fun i -> isInvalid i value)
 
 let part2 =
     getRanges "input.txt"
-    |> Seq.collect (getInvalidValues isValidAllLengths)
+    |> Seq.collect (getInvalidValues isInvalidAllSplits)
     |> Seq.sum 
 
 printfn "%d" part1
