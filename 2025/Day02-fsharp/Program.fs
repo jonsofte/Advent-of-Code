@@ -4,7 +4,7 @@ open System.IO
 
 let getRanges file =
     File.ReadAllText(file).Split(',')
-    |> Seq.map(fun s -> s.Split('-') |>  Seq.toArray) 
+    |> Seq.map(fun s -> s.Split('-')) 
     |> Seq.map(fun p -> (int64 p[0], int64 p[1]))
 
 let splitString split (value: string) =
@@ -22,7 +22,7 @@ let isInvalid split value =
 
 let getInvalidValues isInvalid range =
     [(fst range)..(snd range)]
-    |> Seq.filter (fun i -> isInvalid i)
+    |> Seq.filter isInvalid 
 
 let part1 =
     getRanges "input.txt"
